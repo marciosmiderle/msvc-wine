@@ -44,11 +44,6 @@ RUN git clone git://github.com/FFmpeg/gas-preprocessor.git && \
 ENV PATH=/opt/gas-preprocessor:$PATH
 
 WORKDIR /build
-COPY patches/gas-preprocessor/ ./patches/gas-preprocessor/
-RUN git config --global user.name "Dav1d build test" && \
-    git config --global user.email root@localhost && \
-    cd /opt/gas-preprocessor && \
-    git am -3 /build/patches/gas-preprocessor/*.patch
 
 COPY cross-msvc-arm64.txt dav1d/
 RUN wineserver -p && \
