@@ -1,5 +1,5 @@
 [binaries]
-c = 'gaspp-cl-arm64'
+c = 'cl'
 cpp = 'cl'
 ar = 'lib'
 windres = 'rc'
