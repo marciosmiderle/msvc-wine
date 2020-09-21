@@ -1,10 +1,9 @@
 ARG BASE=msvc-wine
 FROM $BASE
 
-# Meson needs python3, and requires a native compiler to be available.
-# Building ninja requires python. Building dav1d requires nasm.
+# Meson needs python3, building dav1d requires nasm.
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends git build-essential python3 python nasm
+    apt-get install -y --no-install-recommends git ninja-build python3 nasm
 
 WORKDIR /opt
 RUN git clone git://github.com/mesonbuild/meson && \
@@ -12,13 +11,6 @@ RUN git clone git://github.com/mesonbuild/meson && \
     git checkout 9d8906363ecd682b4b03064a862fd17069a70df4
 
 ENV PATH=/opt/meson:$PATH
-
-RUN git clone git://github.com/mstorsjo/ninja && \
-    cd ninja && \
-    git checkout 00ca3e147f55d00a178d0ec1b1268c6793be3e16 && \
-    ./configure.py --bootstrap
-
-ENV PATH=/opt/ninja:$PATH
 
 WORKDIR /build
 RUN git clone http://code.videolan.org/videolan/dav1d.git && \
@@ -40,6 +32,9 @@ WORKDIR /opt
 RUN git clone git://github.com/FFmpeg/gas-preprocessor.git && \
     cd gas-preprocessor && \
     git checkout e6ccf371292af7f50f8386f5d2be7e563f71035f
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends cpp
 
 ENV PATH=/opt/gas-preprocessor:$PATH
 
